@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "botkit": "^0.2.2",
+    "command-line-args": "^3.0.1",
+    "localtunnel": "^1.8.1",
+    "request": "^2.75.0"
+  }
+}
