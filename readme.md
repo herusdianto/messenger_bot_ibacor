@@ -1,6 +1,6 @@
-# IBacor Messenger BOT
+# iBacor Messenger BOT
 
-Repo ini merupakan contoh messenger BOT menggunakan [BotKit](https://github.com/howdyai/botkit) dan API dari [IBacor](ibacor.com/).
+Repo ini merupakan contoh messenger BOT menggunakan [BotKit](https://github.com/howdyai/botkit) dan API dari [iBacor](ibacor.com/).
 
 ## Install
 
@@ -20,7 +20,7 @@ Repo ini merupakan contoh messenger BOT menggunakan [BotKit](https://github.com/
 
         cp run.sh.example run.sh
 
-5. Sesuaikan value variabel `ACCESS_TOKEN` & `VERIFY_TOKEN` (didapat dari facebook), `API_KEY` (didapat dari ibacor) dan `SUBDOMAIN` (untuk proses testing menggunakan localtunnel).
+5. Sesuaikan value variabel `ACCESS_TOKEN` & `VERIFY_TOKEN` (didapat dari Facebook), `API_KEY` (didapat dari iBacor) dan `SUBDOMAIN` (untuk proses testing menggunakan Localtunnel).
 
 6. Jalankan script `run.sh`:
 
