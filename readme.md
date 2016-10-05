@@ -1,6 +1,6 @@
 # iBacor Messenger BOT
 
-Repo ini merupakan contoh messenger BOT menggunakan [BotKit](https://github.com/howdyai/botkit) dan API dari [iBacor](ibacor.com/).
+Repo ini merupakan contoh messenger BOT menggunakan [BotKit](https://github.com/howdyai/botkit) dan API dari [iBacor](http://ibacor.com).
 
 ## Install
 
