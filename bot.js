@@ -120,7 +120,7 @@ controller.hears([ 'pln', 'tagihan pln' ], 'message_received', function(bot, mes
 })
 
 controller.on('message_received', function(bot, message) {
-    bot.reply(message, 'Maaf perintah tidak ditemukan, silahkan ketik `help`.')
+    bot.reply(message, 'Maaf perintah tidak ditemukan, silahkan ketik `help atau bantuan`.')
 
     return
 })
@@ -183,7 +183,6 @@ function askPLNBulan(idPelanggan, tahun, bot, message, response, convo) {
             return
         }
 
-        // cuma ketik 1 bulan
         if(bulan.toString().length == 1) {
             bulan = `0${bulan}`
         }
