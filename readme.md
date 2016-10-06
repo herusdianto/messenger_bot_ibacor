@@ -6,7 +6,7 @@ Repo ini merupakan contoh messenger BOT menggunakan [BotKit](https://github.com/
 
 1. Clone repo
 
-        git clone https://gitlab.com/herusdianto/messenger_bot_ibacor.git
+        git clone https://github.com/herusdianto/messenger_bot_ibacor.git
 
 2. Setelah selesai, buka terminal kemudian arahkan ke folder `messenger_bot_ibacor`:
 
@@ -32,3 +32,15 @@ Untuk sementara (sampai botkit rilis minimal v0.2.3) anda harus ikuti langkah-la
 
 1. Agar BotKit mendukung fitur Quick Reply Messenger, rubah file Facebook.js sesuai dengan petunjuk [disini](https://github.com/howdyai/botkit/pull/306/files).
 2. Agar BotKit mendukung fitur Typing On, rubah file Facebook.js sesuai dengan petunjuk [disini](https://github.com/howdyai/botkit/pull/407/files).
+
+## Fitur
+
+- [x] Kurs
+- [x] Tagihan PLN
+- [ ] Ongkir
+- [ ] Cek Resi
+- [ ] Zodiak
+- [ ] Data Siswa
+- [ ] Jadwal Kereta Api
+- [ ] Jadwal KRL
+- [ ] Jadwal Bioskop
