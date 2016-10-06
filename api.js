@@ -39,8 +39,6 @@ class API {
                     let data = object.data
                     let reply = ``
 
-                    console.log(data)
-
                     if(data === undefined) {
                         reply = 'Data bank tidak ditemukan.'
 
@@ -60,7 +58,50 @@ class API {
                     reply += `Bank: ${namaBank}\n`
                     reply += `Mata Uang: ${data.kurs.mata_uang}\n`
                     reply += `Kurs Jual: ${kursJual}\n`
-                    reply += `Kurs Beli: ${kursBeli}\n`
+                    reply += `Kurs Beli: ${kursBeli}`
+
+                    resolve(reply)
+                }
+            })
+        })
+    }
+
+    getTagihanPLN(idPelanggan, tahun, bulan) {
+        return new Promise((resolve, reject) => {
+            let url = `http://ibacor.com/api/tagihan-pln?idp=${idPelanggan}&thn=${tahun}&bln=${bulan}`
+
+            request(url, function (error, response, body) {
+                if(error) {
+                    reject(error)
+
+                    return
+                }
+
+                if (!error && response.statusCode == 200) {
+                    let object = JSON.parse(body)
+                    let status = object.status
+                    let data = object.data
+                    let reply = ``
+
+                    if(status == 'error') {
+                        reply = 'Data tagihan tidak ditemukan.'
+
+                        reject(reply)
+
+                        return
+                    }
+
+                    reply += `Di bawah ini merupakan data tagihan PLN yang anda minta:\n`
+                    reply += `Nama: ${data.nama}\n`
+                    reply += `Kota: ${data.namaupi}\n`
+                    reply += `Alamat: ${data.alamat}\n`
+                    reply += `Bulan: ${data.namathblrek}\n`
+                    reply += `Tagihan: ${data.tagihan}\n`
+                    reply += `Terbilang: ${data.terbilang}\n`
+
+                    if(data.ketlunas) {
+                        reply += `Lunas: ${data.ketlunas}`
+                    }
 
                     resolve(reply)
                 }

@@ -80,8 +80,17 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
     })
 })
 
-controller.hears('(.*) ?kurs ?(.*)', 'message_received', function(bot, message) {
-    bot.startConversation(message, function(err, convo) {
+controller.hears([ 'help', 'bantuan' ], 'message_received', function(bot, message) {
+    let reply = `Gunakan perintah di bawah ini:\n`
+    reply += `help | bantuan => melihat pesan ini\n`
+    reply += `kurs | cek kurs => cek kurs mata uang\n`
+    reply += `pln | tagihan pln => cek tagihan pln\n`
+
+    bot.reply(message, reply)
+})
+
+controller.hears([ 'kurs', 'cek kurs' ], 'message_received', function(bot, message) {
+    bot.startConversation(message, function(response, convo) {
         let reply = api.getKursBankList()
 
         convo.ask(reply, function(response, convo) {
@@ -104,11 +113,96 @@ controller.hears('(.*) ?kurs ?(.*)', 'message_received', function(bot, message) 
     })
 })
 
+controller.hears([ 'pln', 'tagihan pln' ], 'message_received', function(bot, message) {
+    bot.startConversation(message, function(response, convo) {
+        askPLNIdPelanggan(bot, message, response, convo)
+    })
+})
+
 controller.on('message_received', function(bot, message) {
     bot.reply(message, 'Maaf perintah tidak ditemukan, silahkan ketik `help`.')
 
     return
 })
+
+function askPLNIdPelanggan(bot, message, response, convo) {
+    convo.ask('Berapa nomor ID pelanggan anda?', function(response, convo) {
+        let idPelanggan = parseInt(response.text)
+
+        if(isNaN(idPelanggan)) {
+            let reply = 'ID pelanggan harus berupa angka, silahkan coba lagi.'
+
+            bot.reply(message, reply)
+
+            convo.next()
+
+            return
+        }
+
+        sendTypingOn(bot, message)
+
+        askPLNTahun(idPelanggan, bot, message, response, convo)
+
+        convo.next()
+    })
+}
+
+function askPLNTahun(idPelanggan, bot, message, response, convo) {
+    convo.ask('Anda ingin cek tagihan untuk tahun berapa?', function(response, convo) {
+        let tahun = parseInt(response.text)
+
+        if(isNaN(tahun)) {
+            let reply = 'Tahun harus berupa angka, silahkan coba lagi.'
+
+            bot.reply(message, reply)
+
+            convo.next()
+
+            return
+        }
+
+        sendTypingOn(bot, message)
+
+        askPLNBulan(idPelanggan, tahun, bot, message, response, convo)
+
+        convo.next()
+    })
+}
+
+function askPLNBulan(idPelanggan, tahun, bot, message, response, convo) {
+    convo.ask('Bulan berapa? Isi dengan angka 01 sampai 12', function(response, convo) {
+        let bulan = parseInt(response.text)
+
+        if(isNaN(bulan)) {
+            let reply = 'Bulan harus berupa angka, silahkan coba lagi.'
+
+            bot.reply(message, reply)
+
+            convo.next()
+
+            return
+        }
+
+        // cuma ketik 1 bulan
+        if(bulan.toString().length == 1) {
+            bulan = `0${bulan}`
+        }
+
+        sendTypingOn(bot, message)
+
+        api.getTagihanPLN(idPelanggan, tahun, bulan)
+            .then(reply => {
+                bot.reply(message, reply)
+
+                convo.next()
+            })
+            .catch(reply => {
+                handleError(bot, message, reply)
+
+                convo.next()
+            })
+    })
+}
 
 function sendTypingOn(bot, message) {
     let reply = {
