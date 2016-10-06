@@ -2,7 +2,7 @@
 
 const request = require('request')
 
-class IBacor {
+class API {
     constructor(api_key) {
         this.api_key = api_key
     }
@@ -69,4 +69,4 @@ class IBacor {
     }
 }
 
-module.exports = IBacor
+module.exports = API

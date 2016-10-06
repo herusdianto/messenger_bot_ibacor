@@ -37,8 +37,8 @@ const controller = botkit.facebookbot({
 
 const bot = controller.spawn({})
 
-const IBacor = require('./ibacor')
-const ibacor = new IBacor(api_key)
+const API = require('./api')
+const api = new API(api_key)
 
 if (!page_token) {
     console.log('Error: Specify page_token in environment')
@@ -82,14 +82,14 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
 
 controller.hears('(.*) ?kurs ?(.*)', 'message_received', function(bot, message) {
     bot.startConversation(message, function(err, convo) {
-        let reply = ibacor.getKursBankList()
+        let reply = api.getKursBankList()
 
         convo.ask(reply, function(response, convo) {
             let bank = response.text.toLowerCase()
 
             sendTypingOn(bot, message)
 
-            ibacor.getKursByBank(bank)
+            api.getKursByBank(bank)
                 .then(reply => {
                     bot.reply(message, reply)
 
