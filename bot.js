@@ -82,14 +82,14 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
 
 controller.hears([ 'help', 'bantuan' ], 'message_received', function(bot, message) {
     let reply = `Gunakan perintah di bawah ini:\n`
-    reply += `help | bantuan => melihat pesan ini\n`
-    reply += `kurs | cek kurs => cek kurs mata uang\n`
-    reply += `pln | tagihan pln => cek tagihan pln\n`
+    reply += `help,bantuan => Melihat pesan ini\n`
+    reply += `kurs => Cek kurs mata uang\n`
+    reply += `pln => Cek tagihan pln\n`
 
     bot.reply(message, reply)
 })
 
-controller.hears([ 'kurs', 'cek kurs' ], 'message_received', function(bot, message) {
+controller.hears([ 'kurs' ], 'message_received', function(bot, message) {
     bot.startConversation(message, function(response, convo) {
         let reply = api.getKursBankList()
 
@@ -113,7 +113,7 @@ controller.hears([ 'kurs', 'cek kurs' ], 'message_received', function(bot, messa
     })
 })
 
-controller.hears([ 'pln', 'tagihan pln' ], 'message_received', function(bot, message) {
+controller.hears([ 'pln' ], 'message_received', function(bot, message) {
     bot.startConversation(message, function(response, convo) {
         askPLNIdPelanggan(bot, message, response, convo)
     })
