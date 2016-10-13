@@ -38,7 +38,7 @@ const controller = botkit.facebookbot({
 const bot = controller.spawn({})
 
 const API = require('./api')
-const api = new API(api_key)
+const api = new API(api_key, page_token)
 
 if (!page_token) {
     console.log('Error: Specify page_token in environment')
@@ -56,7 +56,7 @@ if (!api_key) {
 }
 
 if(ops.lt === false && ops.ltsubdomain !== null) {
-    console.log("Error: --ltsubdomain can only be used together with --lt.")
+    console.log('Error: --ltsubdomain can only be used together with --lt.')
     process.exit()
 }
 
@@ -69,11 +69,11 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
                     console.log(err)
                     process.exit()
                 }
-                console.log("Your bot is available on the web at the following URL: " + tunnel.url + '/facebook/receive')
+                console.log('Your bot is available on the web at the following URL: ' + tunnel.url + '/facebook/receive')
             })
 
             tunnel.on('close', function() {
-                console.log("Your bot is no longer available on the web at the localtunnnel.me URL.")
+                console.log('Your bot is no longer available on the web at the localtunnnel.me URL.')
                 process.exit()
             })
         }
@@ -81,12 +81,20 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
 })
 
 controller.hears([ 'help', 'bantuan' ], 'message_received', function(bot, message) {
-    let reply = `Gunakan perintah di bawah ini:\n`
-    reply += `help,bantuan => Melihat pesan ini\n`
-    reply += `kurs => Cek kurs mata uang\n`
-    reply += `pln => Cek tagihan pln\n`
+    api.getUserInfo(message.user)
+        .then(body => {
+            let reply = `Hai ${body.first_name}, silahkan gunakan perintah di bawah ini:\n`
+            reply += `help,bantuan => Melihat pesan ini.\n`
+            reply += `kurs => Cek kurs mata uang.\n`
+            reply += `pln => Cek tagihan pln.\n`
 
-    bot.reply(message, reply)
+            bot.reply(message, reply)
+        })
+        .catch(body => {
+            handleError(bot, message)
+
+            convo.next()
+        })
 })
 
 controller.hears([ 'kurs' ], 'message_received', function(bot, message) {
@@ -124,6 +132,14 @@ controller.on('message_received', function(bot, message) {
 
     return
 })
+
+function sendTypingOn(bot, message) {
+    let reply = {
+        sender_action: 'typing_on'
+    }
+
+    bot.reply(message, reply)
+}
 
 function askPLNIdPelanggan(bot, message, response, convo) {
     convo.ask('Berapa nomor ID pelanggan anda?', function(response, convo) {
@@ -201,14 +217,6 @@ function askPLNBulan(idPelanggan, tahun, bot, message, response, convo) {
                 convo.next()
             })
     })
-}
-
-function sendTypingOn(bot, message) {
-    let reply = {
-        sender_action: 'typing_on'
-    }
-
-    bot.reply(message, reply)
 }
 
 function handleError(bot, message, reply) {

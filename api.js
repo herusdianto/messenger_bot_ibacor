@@ -3,8 +3,41 @@
 const request = require('request')
 
 class API {
-    constructor(api_key) {
+    constructor(api_key, access_token) {
         this.api_key = api_key
+        this.access_token = access_token
+    }
+
+    getUserInfo(userId) {
+        return new Promise((resolve, reject) => {
+            let url = `https://graph.facebook.com/v2.6/${userId}`
+
+            request({
+                method: 'GET',
+                uri: url,
+                qs: {
+                    fields: 'first_name,last_name,profile_pic,locale,timezone,gender',
+                    access_token: this.access_token
+                },
+                json: true
+            }, (error, response, body) => {
+                if(error) {
+                    reject(error)
+
+                    return
+                }
+
+                if(body.error) {
+                    reject(body.error)
+
+                    return
+                }
+
+                if (!error && response.statusCode == 200) {
+                    resolve(body)
+                }
+            })
+        })
     }
 
     getKursBankList() {
@@ -24,19 +57,31 @@ class API {
 
     getKursByBank(bank) {
         return new Promise((resolve, reject) => {
-            let url = `http://ibacor.com/api/kurs?bank=${bank}`
+            let url = `http://ibacor.com/api/kurs`
 
-            request(url, function (error, response, body) {
+            request({
+                method: 'GET',
+                uri: url,
+                qs: {
+                    bank: bank
+                },
+                json: true
+            }, (error, response, body) => {
                 if(error) {
                     reject(error)
 
                     return
                 }
 
+                if(body.error) {
+                    reject(body.error)
+
+                    return
+                }
+
                 if (!error && response.statusCode == 200) {
-                    let object = JSON.parse(body)
-                    let date = object.date
-                    let data = object.data
+                    let date = body.date
+                    let data = body.data
                     let reply = ``
 
                     if(data === undefined) {
@@ -70,17 +115,22 @@ class API {
         return new Promise((resolve, reject) => {
             let url = `http://ibacor.com/api/tagihan-pln?idp=${idPelanggan}&thn=${tahun}&bln=${bulan}`
 
-            request(url, function (error, response, body) {
+            request(url, (error, response, body) => {
                 if(error) {
                     reject(error)
 
                     return
                 }
 
+                if(body.error) {
+                    reject(body.error)
+
+                    return
+                }
+
                 if (!error && response.statusCode == 200) {
-                    let object = JSON.parse(body)
-                    let status = object.status
-                    let data = object.data
+                    let status = body.status
+                    let data = body.data
                     let reply = ``
 
                     if(status == 'error') {
