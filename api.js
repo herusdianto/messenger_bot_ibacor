@@ -3,6 +3,7 @@
 const request = require('request')
 
 class API {
+
     constructor(api_key, access_token) {
         this.api_key = api_key
         this.access_token = access_token
@@ -21,13 +22,13 @@ class API {
                 },
                 json: true
             }, (error, response, body) => {
-                if(error) {
+                if (error) {
                     reject(error)
 
                     return
                 }
 
-                if(body.error) {
+                if (body.error) {
                     reject(body.error)
 
                     return
@@ -67,13 +68,13 @@ class API {
                 },
                 json: true
             }, (error, response, body) => {
-                if(error) {
+                if (error) {
                     reject(error)
 
                     return
                 }
 
-                if(body.error) {
+                if (body.error) {
                     reject(body.error)
 
                     return
@@ -84,7 +85,7 @@ class API {
                     let data = body.data
                     let reply = ``
 
-                    if(data === undefined) {
+                    if (data === undefined) {
                         reply = 'Data bank tidak ditemukan.'
 
                         reject(reply)
@@ -111,18 +112,27 @@ class API {
         })
     }
 
-    getTagihanPLN(idPelanggan, tahun, bulan) {
+    getTagihanPLN(idPelanggan, bulan, tahun) {
         return new Promise((resolve, reject) => {
-            let url = `http://ibacor.com/api/tagihan-pln?idp=${idPelanggan}&thn=${tahun}&bln=${bulan}`
+            let url = `http://ibacor.com/api/tagihan-pln`
 
-            request(url, (error, response, body) => {
-                if(error) {
+            request({
+                method: 'GET',
+                uri: url,
+                qs: {
+                    idp: idPelanggan,
+                    thn: tahun,
+                    bln: bulan,
+                },
+                json: true
+            }, (error, response, body) => {
+                if (error) {
                     reject(error)
 
                     return
                 }
 
-                if(body.error) {
+                if (body.error) {
                     reject(body.error)
 
                     return
@@ -133,7 +143,7 @@ class API {
                     let data = body.data
                     let reply = ``
 
-                    if(status == 'error') {
+                    if (status == 'error') {
                         reply = 'Data tagihan tidak ditemukan.'
 
                         reject(reply)
@@ -149,7 +159,7 @@ class API {
                     reply += `Tagihan: ${data.tagihan}\n`
                     reply += `Terbilang: ${data.terbilang}\n`
 
-                    if(data.ketlunas) {
+                    if (data.ketlunas) {
                         reply += `Lunas: ${data.ketlunas}`
                     }
 
@@ -158,6 +168,7 @@ class API {
             })
         })
     }
+
 }
 
 module.exports = API
