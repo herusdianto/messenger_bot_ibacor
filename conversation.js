@@ -38,7 +38,16 @@ class Conversation {
         let self = this
 
         bot.startConversation(message, (response, convo) => {
-            let reply = self.api.getKursBankList()
+            let reply = {
+                text: 'Silahkan pilih bank di bawah ini:',
+                quick_replies: [
+                    { content_type: 'text', title: 'BI', payload: 'KURS_BI' },
+                    { content_type: 'text', title: 'BCA', payload: 'KURS_BCA' },
+                    { content_type: 'text', title: 'BNI', payload: 'KURS_BNI' },
+                    { content_type: 'text', title: 'BRI', payload: 'KURS_BRI' },
+                    { content_type: 'text', title: 'BJB', payload: 'KURS_BJB' },
+                ]
+            }
 
             convo.ask(reply, (response, convo) => {
                 let bank = response.text.toLowerCase()
