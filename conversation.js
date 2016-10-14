@@ -34,7 +34,7 @@ class Conversation {
             })
     }
 
-    sendKurs(bot, message) {
+    askBankKurs(bot, message) {
         let self = this
 
         bot.startConversation(message, (response, convo) => {
@@ -69,7 +69,7 @@ class Conversation {
         })
     }
 
-    sendPLN(bot, message) {
+    askPLN(bot, message) {
         let self = this
 
         bot.startConversation(message, (response, convo) => {

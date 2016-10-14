@@ -83,11 +83,11 @@ controller.hears(['help', 'bantuan'], 'message_received', (bot, message) => {
 })
 
 controller.hears(['kurs'], 'message_received', (bot, message) => {
-    conversation.sendKurs(bot, message)
+    conversation.askBankKurs(bot, message)
 })
 
 controller.hears(['pln'], 'message_received', (bot, message) => {
-    conversation.sendPLN(bot, message)
+    conversation.askPLN(bot, message)
 })
 
 controller.on('message_received', (bot, message) => {
