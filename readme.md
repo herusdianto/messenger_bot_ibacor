@@ -37,9 +37,9 @@ Untuk sementara (sampai botkit rilis minimal v0.2.3) anda harus ikuti langkah-la
 
 - [x] Kurs
 - [x] Tagihan PLN
+- [x] Zodiak
 - [ ] Ongkir
 - [ ] Cek Resi
-- [ ] Zodiak
 - [ ] Data Siswa
 - [ ] Jadwal Kereta Api
 - [ ] Jadwal KRL
