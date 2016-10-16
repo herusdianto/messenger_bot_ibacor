@@ -11,7 +11,7 @@ class API {
 
     getUserInfo(userId) {
         return new Promise((resolve, reject) => {
-            let url = `https://graph.facebook.com/v2.6/${userId}`
+            let url = 'https://graph.facebook.com/v2.6/${userId}'
 
             request({
                 method: 'GET',
@@ -37,7 +37,7 @@ class API {
 
     getKursByBank(bank) {
         return new Promise((resolve, reject) => {
-            let url = `http://ibacor.com/api/kurs`
+            let url = 'http://ibacor.com/api/kurs'
 
             request({
                 method: 'GET',
@@ -72,7 +72,7 @@ class API {
 
     getTagihanPLN(idPelanggan, bulan, tahun) {
         return new Promise((resolve, reject) => {
-            let url = `http://ibacor.com/api/tagihan-pln`
+            let url = 'http://ibacor.com/api/tagihan-pln'
 
             request({
                 method: 'GET',
@@ -109,7 +109,7 @@ class API {
 
     getZodiak(nama, tanggal) {
         return new Promise((resolve, reject) => {
-            let url = `http://ibacor.com/api/zodiak`
+            let url = 'http://ibacor.com/api/zodiak'
 
             request({
                 method: 'GET',
@@ -132,6 +132,44 @@ class API {
             })
         })
     }
+
+    getDataSiswa(nisn) {
+        return new Promise((resolve, reject) => {
+            let url = 'http://ibacor.com/api/data-siswa'
+
+            request({
+                method: 'GET',
+                uri: url,
+                qs: {
+                    nisn: nisn,
+                },
+                json: true
+            }, (error, response, body) => {
+                if (error) {
+                    reject(error)
+
+                    return
+                }
+
+                if (!error && response.statusCode == 200) {
+                    let status = body.status
+
+                    if (status == 'error') {
+                        let message = body.message
+
+                        let reply = (message) ? message : 'Data siswa tidak ditemukan.'
+
+                        reject(reply)
+
+                        return
+                    }
+
+                    resolve(body)
+                }
+            })
+        })
+    }
+
 
 }
 

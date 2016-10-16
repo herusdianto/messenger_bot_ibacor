@@ -5,8 +5,13 @@ const Help = require('./conversations/help')
 const Kurs = require('./conversations/kurs')
 const PLN = require('./conversations/pln')
 const Zodiak = require('./conversations/zodiak')
+const Siswa = require('./conversations/siswa')
 
-var help, kurs, pln, zodiak
+var help,
+    kurs,
+    pln,
+    zodiak,
+    siswa
 
 class Conversation {
 
@@ -15,6 +20,7 @@ class Conversation {
         this.kurs = new Kurs(api_key, access_token)
         this.pln = new PLN(api_key, access_token)
         this.zodiak = new Zodiak(api_key, access_token)
+        this.siswa = new Siswa(api_key, access_token)
     }
 
     sendHelp(bot, message) {
@@ -31,6 +37,10 @@ class Conversation {
 
     askZodiak(bot, message) {
         this.zodiak.askZodiak(bot, message)
+    }
+
+    askSiswa(bot, message) {
+        this.siswa.askSiswa(bot, message)
     }
 
 }

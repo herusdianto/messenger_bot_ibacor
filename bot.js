@@ -94,6 +94,10 @@ controller.hears(['zodiak'], 'message_received', (bot, message) => {
     conversation.askZodiak(bot, message)
 })
 
+controller.hears(['siswa'], 'message_received', (bot, message) => {
+    conversation.askSiswa(bot, message)
+})
+
 controller.on('message_received', (bot, message) => {
     bot.reply(message, 'Maaf perintah tidak ditemukan, silahkan ketik `help atau bantuan`.')
 
