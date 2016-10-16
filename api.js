@@ -28,12 +28,6 @@ class API {
                     return
                 }
 
-                if (body.error) {
-                    reject(body.error)
-
-                    return
-                }
-
                 if (!error && response.statusCode == 200) {
                     resolve(body)
                 }
@@ -59,37 +53,18 @@ class API {
                     return
                 }
 
-                if (body.error) {
-                    reject(body.error)
-
-                    return
-                }
-
                 if (!error && response.statusCode == 200) {
                     let data = body.data
-                    let reply = ``
 
                     if (data === undefined) {
-                        reply = 'Data bank tidak ditemukan.'
+                        let reply = 'Data bank tidak ditemukan.'
 
                         reject(reply)
 
                         return
                     }
 
-                    data = data[0]
-
-                    let namaBank = data.bank.toUpperCase()
-                    let kursJual = data.kurs.jual
-                    let kursBeli = data.kurs.beli
-
-                    reply += `Di bawah ini merupakan data kurs yang anda minta:\n`
-                    reply += `Bank: ${namaBank}\n`
-                    reply += `Mata Uang: ${data.kurs.mata_uang}\n`
-                    reply += `Kurs Jual: ${kursJual}\n`
-                    reply += `Kurs Beli: ${kursBeli}`
-
-                    resolve(reply)
+                    resolve(body)
                 }
             })
         })
@@ -115,38 +90,44 @@ class API {
                     return
                 }
 
-                if (body.error) {
-                    reject(body.error)
-
-                    return
-                }
-
                 if (!error && response.statusCode == 200) {
                     let status = body.status
-                    let data = body.data
-                    let reply = ``
 
                     if (status == 'error') {
-                        reply = 'Data tagihan tidak ditemukan.'
+                        let reply = 'Data tagihan tidak ditemukan.'
 
                         reject(reply)
 
                         return
                     }
 
-                    reply += `Di bawah ini merupakan data tagihan PLN yang anda minta:\n`
-                    reply += `Nama: ${data.nama}\n`
-                    reply += `Kota: ${data.namaupi}\n`
-                    reply += `Alamat: ${data.alamat}\n`
-                    reply += `Bulan: ${data.namathblrek}\n`
-                    reply += `Tagihan: ${data.tagihan}\n`
-                    reply += `Terbilang: ${data.terbilang}\n`
+                    resolve(body)
+                }
+            })
+        })
+    }
 
-                    if (data.ketlunas) {
-                        reply += `Lunas: ${data.ketlunas}`
-                    }
+    getZodiak(nama, tanggal) {
+        return new Promise((resolve, reject) => {
+            let url = `http://ibacor.com/api/zodiak`
 
-                    resolve(reply)
+            request({
+                method: 'GET',
+                uri: url,
+                qs: {
+                    nama: nama,
+                    tgl: tanggal,
+                },
+                json: true
+            }, (error, response, body) => {
+                if (error) {
+                    reject(error)
+
+                    return
+                }
+
+                if (!error && response.statusCode == 200) {
+                    resolve(body)
                 }
             })
         })
