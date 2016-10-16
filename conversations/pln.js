@@ -26,16 +26,14 @@ class PLN {
             let idPelanggan = parseInt(response.text.trim())
 
             if (isNaN(idPelanggan)) {
-                let reply = 'ID pelanggan harus berupa angka, silahkan ulangi.'
+                let reply = 'ID pelanggan harus berupa angka.'
 
                 bot.reply(message, reply)
 
-                convo.next()
-
-                return
+                convo.repeat()
+            } else {
+                self.askPLNBulan(idPelanggan, bot, message, convo)
             }
-
-            self.askPLNBulan(idPelanggan, bot, message, convo)
 
             convo.next()
         })
@@ -50,20 +48,18 @@ class PLN {
             let bulan = parseInt(response.text.trim())
 
             if (isNaN(bulan)) {
-                let reply = 'Bulan harus berupa angka, silahkan ulangi.'
+                let reply = 'Bulan harus berupa angka.'
 
                 bot.reply(message, reply)
 
-                convo.next()
+                convo.repeat()
+            } else {
+                if (bulan.toString().length == 1) {
+                    bulan = `0${bulan}`
+                }
 
-                return
+                self.askPLNTahun(idPelanggan, bulan, bot, message, convo)
             }
-
-            if (bulan.toString().length == 1) {
-                bulan = `0${bulan}`
-            }
-
-            self.askPLNTahun(idPelanggan, bulan, bot, message, convo)
 
             convo.next()
         })
@@ -78,16 +74,16 @@ class PLN {
             let tahun = parseInt(response.text.trim())
 
             if (isNaN(tahun)) {
-                let reply = 'Tahun harus berupa angka, silahkan ulangi.'
+                let reply = 'Tahun harus berupa angka.'
 
                 bot.reply(message, reply)
 
+                convo.repeat()
+
                 convo.next()
-
-                return
+            } else {
+                self.processPLN(idPelanggan, bulan, tahun, bot, message, convo)
             }
-
-            self.processPLN(idPelanggan, bulan, tahun, bot, message, convo)
         })
     }
 

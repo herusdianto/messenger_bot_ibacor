@@ -46,8 +46,6 @@ class Zodiak {
 
             let tanggalMoment = moment(tanggal, 'DD-MM-YYYY')
 
-            console.log(tanggalMoment)
-
             if (!tanggalMoment.isValid()) {
                 let reply = 'Tanggal tidak valid.'
 
